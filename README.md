@@ -3,6 +3,11 @@
 An application to demonstrate how to automate the creation/renovation of TLS using the `certificates.k8s.io` API.
 This example tries to automate the process described on [this document.](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
 
+## Requirements
+
+- kubernetes v1.12.X+
+- minikube
+
 ## How it works
 
 1) Creates `CertificateSignRequests` objects on Kubernetes API and blocks until its approval

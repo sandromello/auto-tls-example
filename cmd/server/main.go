@@ -115,7 +115,6 @@ func (s *ServerTLSConfig) X509Cert() *x509.Certificate {
 
 func (s *ServerTLSConfig) X509KeyPair(pemCA []byte) tls.Certificate {
 	var chain []byte
-	// chain = append(chain, s.pemCert, caPem)
 	chain = append(chain, s.pemCert...)
 	chain = append(chain, '\n')
 	chain = append(chain, pemCA...)
@@ -278,7 +277,6 @@ func main() {
 		csr, err := FetchFreshCertificate(kubecli)
 		if err != nil {
 			log.Fatalf("failed fetching certificate: %v", err)
-			// continue
 		}
 		tlsConf, err := NewServerTLSConfig(csr)
 		if err != nil {
@@ -315,12 +313,7 @@ func main() {
 }
 
 func appHandler(w http.ResponseWriter, r *http.Request) {
-	if r.TLS != nil && len(r.TLS.PeerCertificates) > 0 {
-		cn := strings.ToLower(r.TLS.PeerCertificates[0].Subject.CommonName)
-		log.Infof("CN: %v", cn)
-	}
 	w.Header().Add("Content-Type", "application/json")
-
 	isHTTPS := r.TLS != nil
 	response := []byte(
 		fmt.Sprintf(
